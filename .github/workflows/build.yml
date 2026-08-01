@@ -11,7 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+        with:
+          path: 'user_files'
 
       - name: Set up Java
         uses: actions/setup-java@v3
@@ -25,14 +28,20 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Create fresh Flutter project
+        run: |
+          flutter create staff_app
+          cp user_files/lib/main.dart staff_app/lib/main.dart
+          cp user_files/pubspec.yaml staff_app/pubspec.yaml
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Install dependencies & build
+        run: |
+          cd staff_app
+          flutter pub get
+          flutter build apk --release
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: staff_manager_app
+          path: staff_app/build/app/outputs/flutter-apk/app-release.apk
