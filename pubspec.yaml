@@ -1,5 +1,5 @@
-name: staff_manager
-description: "A new Flutter project."
+name: essaouira02
+description: "Essaouira Staff Manager App"
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -22,3 +22,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
