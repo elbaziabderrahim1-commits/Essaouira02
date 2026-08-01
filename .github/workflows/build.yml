@@ -11,10 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository code
+      - name: Checkout user files
         uses: actions/checkout@v3
-        with:
-          path: 'user_files'
 
       - name: Set up Java
         uses: actions/setup-java@v3
@@ -28,20 +26,26 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      - name: Create fresh Flutter project
+      - name: Build Project
         run: |
-          flutter create staff_app
-          cp user_files/lib/main.dart staff_app/lib/main.dart
-          cp user_files/pubspec.yaml staff_app/pubspec.yaml
-
-      - name: Install dependencies & build
-        run: |
+          # حفظ ملف main.dart الذي كتبته
+          cp lib/main.dart /tmp/main.dart
+          
+          # إنشاء مشروع Flutter أندرويد جديد بجميع الإعدادات المطلوبة
+          cd ..
+          flutter create --org com.example staff_app
+          
+          # استبدال ملف main.dart وإضافة حزمة اللغات
+          cp /tmp/main.dart staff_app/lib/main.dart
           cd staff_app
-          flutter pub get
+          flutter pub add flutter_localizations --sdk=flutter
+          flutter pub add intl
+          
+          # بناء ملف APK
           flutter build apk --release
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v3
         with:
           name: staff_manager_app
-          path: staff_app/build/app/outputs/flutter-apk/app-release.apk
+          path: ../staff_app/build/app/outputs/flutter-apk/app-release.apk
