@@ -13,7 +13,7 @@ class StaffManagerApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'إدارة الموظفين',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
       home: const EmployeeListScreen(),
